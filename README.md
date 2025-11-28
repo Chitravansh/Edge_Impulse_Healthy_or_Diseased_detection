@@ -1,44 +1,31 @@
-# 🌿 LeafGuard — Edge AI Plant Leaf Health Detector (Android | Offline TFLite)
+# 🌿 LeafGuard — Edge AI Plant Leaf Health Classifier (Android | Offline TFLite)
 
-LeafGuard is a real-time, offline, on-device Android prototype that classifies plant leaf health into **Healthy** or **Diseased**, using a compact TensorFlow Lite model exported via Edge Impulse and powered by CameraX for real-time camera capture.
-
----
-
-## 🚜 Real‑World Problem
-
-Farmers often lack fast AI‑powered tools that can instantly analyze leaf health **without internet**. This leads to:
-
-* Delayed diagnosis
-* Limited accessibility in rural areas
-* Dependence on cloud solutions
-
-**Goal:** Provide instant, offline, mobile‑based leaf health detection using edge‑inference on Android.
+LeafGuard is a real‑time, offline, on‑device Android prototype that classifies plant leaf health as **Healthy** or **Diseased**, using a compact TensorFlow Lite model exported from Edge Impulse Studio. Inference runs entirely on the phone itself — serving as an **edge device** — via live camera input powered by CameraX.
 
 ---
 
-## ✅ MVP — What’s Implemented
+## 🚜 Problem
 
-✔ Offline inference (2‑class image classifier)
-✔ Live camera preview + capture using CameraX
-✔ TFLite model execution directly on device
-✔ Prediction + confidence score display
-✔ Works on emulator/phone for quick testing
+Farmers often lack fast AI tools that can diagnose leaf issues **without internet**, causing delayed detection and limited field usability.
+
+**Goal:** Instant, offline, camera‑driven ML classification on Android.
 
 ---
 
-## 🧠 AI/ML Implementation Summary
+## ✅ MVP Features
 
-1. Model trained (prototype 2‑class dataset) using Edge Impulse Studio
-2. Model exported as `plant_disease_model.tflite`
-3. Labels mapped to model output order in `label.txt`
-4. Camera frames converted from `ImageProxy` (YUV) → `Bitmap` → model input
-5. App loads `.tflite` + `label.txt` from **assets/** for inference
+✔ 2‑class classifier (`Healthy` / `Diseased`)
+✔ Offline inference (no cloud dependency)
+✔ Real‑time camera input using CameraX
+✔ Lightweight TFLite model deployed from Edge Impulse
+✔ Prediction + confidence display
+✔ Android phone/emulator used as edge hardware
 
 ---
 
-## 📁 Required Assets Included
+## 📁 Model & Labels
 
-Place the following under:
+Add required assets to:
 
 ```
 app/src/main/assets/
@@ -46,7 +33,7 @@ app/src/main/assets/
 └── label.txt
 ```
 
-`label.txt` must match model output order. Example:
+Contents of `label.txt` (must match model output index order):
 
 ```
 healthy
@@ -55,36 +42,58 @@ diseased
 
 ---
 
-## ⚙️ Tech Stack
+## 🧠 Edge AI Workflow Summary
 
-| Component                 | Technology               |
-| ------------------------- | ------------------------ |
-| Language                  | Kotlin                   |
-| UI                        | Jetpack Compose          |
-| Camera                    | CameraX                  |
-| ML Runtime                | TensorFlow Lite          |
-| ML Studio/Export          | Edge Impulse             |
-| Edge Inference Device     | Android Phone / Emulator |
-| Code Hosting (submission) | GitHub                   |
+1. Prototype dataset created and model trained in Edge Impulse Studio
+2. Model exported as `plant_disease_model.tflite`
+3. Camera frames (`ImageProxy`) converted → `Bitmap` → model input
+4. Model + labels loaded from `assets/` for on‑device classification
+5. Softmax probabilities mapped to labels for prediction
 
 ---
 
-## 📱 How to Test on Android Phone (Edge Device)
+## ⚙️ Tech Stack
+
+| Component          | Technology               |
+| ------------------ | ------------------------ |
+| Language           | Kotlin                   |
+| UI                 | Jetpack Compose          |
+| Camera             | CameraX                  |
+| ML Runtime         | TensorFlow Lite          |
+| ML Studio & Export | Edge Impulse             |
+| Edge Device        | Android Phone / Emulator |
+| Code Hosting       | GitHub                   |
+
+---
+
+## 📱 Testing on Android Phone (Edge Device)
 
 1. Open project in Android Studio
 2. Connect phone via USB
-3. In phone, enable:
+3. Enable in phone:
 
-    * Developer Options
-    * USB Debugging
-    * File Transfer (PTP/MTP)
-4. Run ▶ from Android Studio
-5. Grant **Camera Permission**
-6. Capture/Pan a real leaf → view classification result + confidence
+    * Developer Options → USB Debugging ON
+    * USB Mode → File Transfer / PTP / MTP
+4. Run ▶ app from Android Studio
+5. Allow Camera permission
+6. Capture a real leaf → view prediction + confidence
 
 ---
 
-## 🔍 Sample Output (for reference)
+## 📤 Exported APK Sample Included
+
+A built installable sample APK is included in the repository.
+
+```
+apk_release/
+├── LeafGuard.apk   ← Installable demo sample of the Android app
+```
+
+> 📌 This APK file can be found inside the `apk_release/apk_release` folder in the project, generated via **Build → Build APK(s) → Locate in outputs/apk/release/**.
+
+---
+
+## 🔍 Sample Result
 
 ```
 Prediction: Healthy
@@ -93,30 +102,31 @@ Confidence: 73.0 %
 
 ---
 
-## ⚠ Current Prototype Limitations
+## ⚠ Limitations
 
-* 2‑class model only (`Healthy` / `Diseased`)
+* 2‑class prototype only
 * Not crop‑wise or disease‑specific yet
-* Dataset kept small for a **quick edge‑deployment MVP demo**
+* Model kept lightweight for quick edge inference demo
 
 ---
 
-## 🔮 Future Scope (Not part of MVP)
+## 🔮 Future Scope (Next Version)
 
-* Multi‑crop and disease‑specific detection
-* Larger field datasets
-* AI‑based treatment suggestions
-* Model optimizations for low‑power edge hardware
+* Multi‑crop classifications
+* Specific agriculture disease labels
+* Larger custom field datasets
+* AI‑driven treatment suggestions
+* Low‑power optimizations
 
 ---
 
-## ⭐ Why LeafGuard is an Edge AI Solution
+## ⭐ Why this qualifies as Edge AI
 
-* Inference runs **on device** (Android = edge hardware)
-* ML model exported from Edge Impulse to TFLite
-* No cloud dependency at runtime
-* Camera is used as the real‑time sensor input to ML pipeline
-* Works fully **offline with minimal latency**
+* ML model runs **on device itself** (Android = edge hardware)
+* No server/cloud at runtime
+* Works fully **offline with low latency**
+* Camera is the real‑time ML input sensor
+* Model pipeline built using Edge Impulse → optimized to TFLite
 
 ---
 
@@ -127,10 +137,10 @@ Participant — HackerEarth × Edge Impulse Edge AI Contest
 
 ---
 
-## 📌 Tags
+## 🏷️ Tags
 
-`Edge AI` · `On‑Device ML` · `Offline Inference` · `Android Kotlin` · `TFLite` · `CameraX` · `Agriculture AI Prototype` · `Hackathon MVP`
+`Edge AI` · `On‑Device ML` · `Offline Inference` · `Android Kotlin` · `TFLite` · `CameraX` · `Agriculture AI Prototype` · `Hackathon MVP
 
 ---
 
-⭐ If this helped, feel free to star the repo to support AI‑at‑edge innovation!
+⭐ If this helped, feel free to star ⭐ this GitHub repo to support AI‑at‑edge innovation!
